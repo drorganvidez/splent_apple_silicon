@@ -1,0 +1,18 @@
+arch: "arm64"
+os: "Linux"
+
+images:
+  - location: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
+    arch: "arm64"
+
+cpus: 2
+memory: "4GiB"
+disk: "40GiB"
+
+mounts:
+  - location: "."
+    mountPoint: "/workspace"
+    writable: true
+
+ssh:
+  forwardAgent: true
