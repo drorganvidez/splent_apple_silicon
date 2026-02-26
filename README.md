@@ -1,86 +1,66 @@
-# SPLENT Dev VM (Apple Silicon Only)
+# SPLENT Dev VM (Apple Silicon)
 
-This development environment is designed **exclusively for Apple Silicon (M1/M2/M3/M4/M5)** Macs.
+This project provides a simple Ubuntu development VM for **Apple Silicon (M1/M2/M3)** using:
 
-It uses **Lima + Ubuntu + Ansible** to provide a reproducible Linux VM with Docker.
+- VMware Desktop (free for personal use)
+- Vagrant
+- Ubuntu ARM64
+
+It replicates the classic Vagrant workflow used on Intel Macs.
 
 ---
 
 ## Requirements
 
-Install dependencies:
+You need:
+
+- Apple Silicon Mac (arm64)
+- VMware Desktop (free personal license)
+- Vagrant
+- Vagrant VMware plugin
+
+---
+
+## Install VMware Desktop
+
+Download VMware Desktop (Fusion) from the official VMware website (link: https://support.broadcom.com/group/ecx/downloads)
+
+It is free for personal/home use (registration required).
+
+---
+
+## Install Vagrant
 
 ```bash
-brew install lima ansible
-brew install socket_vmnet
+brew install vagrant
 ```
 
-Activate service
+Install the VMware plugin for Vagrant
+```bash
+vagrant plugin install vagrant-vmware-desktop
+```
+
+## Start the VM
+
+From the project root:
 
 ```bash
-sudo brew services start socket_vmnet
+vagrant up --provider=vmware_desktop
 ```
 
-Config socket
+## SSH into the VM
 
 ```bash
-sudo mkdir -p /etc/socket_vmnet
-sudo nano /etc/socket_vmnet/config.json
+vagrant ssh
 ```
-
-```json
-{
-  "networks": [
-    {
-      "name": "splentnet",
-      "mode": "host",
-      "subnet": "10.10.10.0/24",
-      "gateway": "10.10.10.1",
-      "dhcp": {
-        "start": "10.10.10.100",
-        "end": "10.10.10.200"
-      }
-    }
-  ]
-}
-```
-
-Restart service
-
-```bash
-sudo brew services restart socket_vmnet
-```
-
-## Start the Environment
-
-```bash
-make up
-```
-
-This will:
-
-- Create/start an Ubuntu ARM64 VM
-- Install Docker
-- Mount the project into /workspace
-- Configure Git
-- Provision the system automatically
-
-## Access the VM
-
-```bash
-make ssh
-```
-
-The project is available at `/workspace`
 
 ## Stop the VM
 
 ```bash
-make down
+vagrant halt
 ```
 
-## Destroy the VM completely
-
+## Destroy the VM
 ```bash
-make destroy
+vagrant destroy
 ```
