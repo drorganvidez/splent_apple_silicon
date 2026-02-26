@@ -12,6 +12,43 @@ Install dependencies:
 
 ```bash
 brew install lima ansible
+brew install socket_vmnet
+```
+
+Activate service
+
+```bash
+sudo brew services start socket_vmnet
+```
+
+Config socket
+
+```bash
+sudo mkdir -p /etc/socket_vmnet
+sudo nano /etc/socket_vmnet/config.json
+```
+
+```json
+{
+  "networks": [
+    {
+      "name": "splentnet",
+      "mode": "host",
+      "subnet": "10.10.10.0/24",
+      "gateway": "10.10.10.1",
+      "dhcp": {
+        "start": "10.10.10.100",
+        "end": "10.10.10.200"
+      }
+    }
+  ]
+}
+```
+
+Restart service
+
+```bash
+sudo brew services restart socket_vmnet
 ```
 
 ## Start the Environment
